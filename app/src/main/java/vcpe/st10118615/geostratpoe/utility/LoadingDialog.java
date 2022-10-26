@@ -3,4 +3,5 @@ import vcpe.st10118615.geostratpoe.R;
 
 public class LoadingDialog {
 
+
 }
