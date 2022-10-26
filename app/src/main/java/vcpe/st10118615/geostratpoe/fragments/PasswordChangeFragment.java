@@ -1,4 +1,6 @@
 package vcpe.st10118615.geostratpoe.fragments;
 
-public class PasswordChangeFragment {
+import androidx.fragment.app.Fragment;
+
+public class PasswordChangeFragment extends Fragment {
 }

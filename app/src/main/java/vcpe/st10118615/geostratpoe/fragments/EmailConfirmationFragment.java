@@ -1,4 +1,6 @@
 package vcpe.st10118615.geostratpoe.fragments;
 
-public class EmailConfirmationFragment {
+import androidx.fragment.app.Fragment;
+
+public class EmailConfirmationFragment extends Fragment {
 }
