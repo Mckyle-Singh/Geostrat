@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "136182840091",
+    "firebase_url": "https://geostrat2-c3dd7-default-rtdb.firebaseio.com",
+    "project_id": "geostrat2-c3dd7",
+    "storage_bucket": "geostrat2-c3dd7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136182840091:android:40f7b94f259675276731be",
+        "android_client_info": {
+          "package_name": "vcpe.st10118615.geostratpoe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "136182840091-rdb7tvotactilelues8f8odro35nhp63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBODNwmCHDlHNExgNatSFPXe9dPM7LZzjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136182840091-rdb7tvotactilelues8f8odro35nhp63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
