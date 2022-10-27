@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "vcpe.st10118615.geostratpoe"
-        minSdk 29
+        minSdk 25
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -104,5 +104,6 @@ dependencies {
 //    // https://mvnrepository.com/artifact/com.victor/lib
     implementation 'com.victor:lib:1.0.4'
 
+    implementation 'com.github.jt-gilkeson:google-maps-utils:1.0'
 
 }

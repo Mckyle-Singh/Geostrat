@@ -5,7 +5,7 @@ import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import vcpe.st10118615.geostratpoe.databinding.*;
+import vcpe.st10118615.geostratpoe.databinding.InfoWindowLayoutBinding;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
