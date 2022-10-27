@@ -1,9 +1,9 @@
 package vcpe.st10118615.geostratpoe;
 
 public class PlaceModel {
-    int id, drawableId;
-    String name;
-    String placeType;
+    private int id, drawableId;
+    private String name;
+    private String placeType;
 
     public PlaceModel() {
     }

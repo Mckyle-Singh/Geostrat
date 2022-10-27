@@ -12,7 +12,6 @@ public interface AllConstant {
     int LOCATION_REQUEST_CODE = 2000;
     String IMAGE_PATH = "/Profile/image_profile.jpg";
 
-
     ArrayList<PlaceModel> placesName = new ArrayList<>(
             Arrays.asList(
                     new PlaceModel(1, R.drawable.ic_restaurant, "Restaurant", "restaurant"),
@@ -24,7 +23,6 @@ public interface AllConstant {
                     new PlaceModel(7, R.drawable.ic_hospital, "Hospitals & Clinics", "hospital"),
                     new PlaceModel(8, R.drawable.ic_car_wash, "Car Wash", "car_wash"),
                     new PlaceModel(9, R.drawable.ic_saloon, "Beauty Salons", "beauty_salon")
-
             )
     );
 }
