@@ -8,10 +8,9 @@ public class UserModel {
     public UserModel() {
     }
 
-    public UserModel(String email, String username, String image, boolean isNotificationEnable) {
+    public UserModel(String email, String username, boolean isNotificationEnable) {
         this.email = email;
         this.username = username;
-        this.image = image;
         this.isNotificationEnable = isNotificationEnable;
     }
 

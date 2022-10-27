@@ -1,10 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
-    namespace 'vcpe.st10118615.geostratpoe'
     compileSdk 32
 
     defaultConfig {
@@ -23,10 +24,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    dataBinding {
+        enabled = true
+    }
     buildFeatures {
-        dataBinding true
         viewBinding true
+        dataBinding true
     }
 
     packagingOptions {
@@ -91,14 +94,15 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // Image Cropper Library
-    implementation 'com.github.CanHub:Android-Image-Cropper:4.3.0'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
 
     // Shape library to draw curves
     implementation 'io.github.florent37:shapeofview:1.4.7'
 
     // Circular Indicator library
 //    // https://mvnrepository.com/artifact/com.victor/lib
-
+    implementation 'com.victor:lib:1.0.4'
 
 
 }
