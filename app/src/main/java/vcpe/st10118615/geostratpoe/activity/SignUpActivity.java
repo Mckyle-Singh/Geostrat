@@ -1,5 +1,6 @@
 package vcpe.st10118615.geostratpoe.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -24,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import vcpe.st10118615.geostratpoe.UserModel;
 import vcpe.st10118615.geostratpoe.constant.AllConstant;
@@ -56,30 +59,30 @@ public class SignUpActivity extends AppCompatActivity {
             onBackPressed();
         });
 
-//        binding.btnSignUp.setOnClickListener(view -> {
-//            if (areFieldReady()) {
-//                if (imageUri != null) {
-//                    signUp();
-//                } else {
-//                    Toast.makeText(this, "Image is required", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//
-//        binding.imgPick.setOnClickListener(view -> {
-//            if (appPermissions.isStorageOk(this)) {
-//                pickImage();
-//            } else {
-//                appPermissions.requestStoragePermission(this);
-//            }
-//        });
+        binding.btnSignUp.setOnClickListener(view -> {
+            if (areFieldReady()) {
+                if (imageUri != null) {
+                    signUp();
+                } else {
+                    Toast.makeText(this, "Image is required", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        binding.imgPick.setOnClickListener(view -> {
+            if (appPermissions.isStorageOk(this)) {
+                pickImage();
+            } else {
+                appPermissions.requestStoragePermission(this);
+            }
+        });
     }
 
-//    private void pickImage() {
-//        CropImage.activity()
-//                .setCropShape(CropImageView.CropShape.OVAL)
-//                .start(this);
-//    }
+    private void pickImage() {
+        CropImage.activity()
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .start(this);
+    }
 
     private boolean areFieldReady() {
         username = binding.edtUsername.getText().toString().trim();
@@ -117,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void signUp() {
-//        loadingDialog.startLoading();
+        loadingDialog.startLoading();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -139,7 +142,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         String url = imageTask.getResult().toString();
                                         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                                                 .setDisplayName(username)
-//                                                .setPhotoUri(Uri.parse(url))
+                                                .setPhotoUri(Uri.parse(url))
                                                 .build();
                                         firebaseAuth.getCurrentUser().updateProfile(profileChangeRequest).
                                                 addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -157,7 +160,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                         @Override
                                                                                         public void onSuccess(Void aVoid) {
-//                                                                                            loadingDialog.stopLoading();
+                                                                                            loadingDialog.stopLoading();
                                                                                             Toast.makeText(SignUpActivity.this, "Verify email", Toast.LENGTH_SHORT).show();
                                                                                             onBackPressed();
                                                                                         }
@@ -165,7 +168,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                                         }
                                                                     });
                                                         } else {
-//                                                            loadingDialog.stopLoading();
+                                                            loadingDialog.stopLoading();
                                                             Log.d("TAG", "onComplete: Update Profile" + task.getException());
                                                             Toast.makeText(SignUpActivity.this, "Update Profile" + task.getException(), Toast.LENGTH_SHORT).show();
                                                         }
@@ -173,7 +176,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                 });
 
                                     } else {
-//                                        loadingDialog.stopLoading();
+                                        loadingDialog.stopLoading();
                                         Log.d("TAG", "onComplete: Image Path" + imageTask.getException());
                                         Toast.makeText(SignUpActivity.this, "Image Path" + imageTask.getException(), Toast.LENGTH_SHORT).show();
                                     }
@@ -184,7 +187,7 @@ public class SignUpActivity extends AppCompatActivity {
                     });
 
                 } else {
-//                    loadingDialog.stopLoading();
+                    loadingDialog.stopLoading();
                     Log.d("TAG", "onComplete: Create user" + singUp.getException());
                     Toast.makeText(SignUpActivity.this, "" + singUp.getException(), Toast.LENGTH_SHORT).show();
                 }
@@ -192,30 +195,32 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//            CropImage.ActivityResult result = new CropImage.ActivityResult(data);
-//            if (resultCode == RESULT_OK) {
-//                imageUri = result.getUri();
-//                Glide.with(this).load(imageUri).into(binding.imgPick);
-//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                Exception exception = result.getError();
-//                Log.d("TAG", "onActivityResult: " + exception);
-//            }
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Context context = null;
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            assert data != null;
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                imageUri = result.getUri();
+                Glide.with(this).load(imageUri).into(binding.imgPick);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception exception = result.getError();
+                Log.d("TAG", "onActivityResult: " + exception);
+            }
+        }
+    }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == AllConstant.STORAGE_REQUEST_CODE) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                pickImage();
-//            } else {
-//                Toast.makeText(this, "Storage permission denied.", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == AllConstant.STORAGE_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pickImage();
+            } else {
+                Toast.makeText(this, "Storage permission denied.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
