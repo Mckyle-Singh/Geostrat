@@ -1,2 +1,2 @@
 # GeostratPoe
-add MAPS_API_KEY= api key in local.properties
+add MAPS_API_KEY=AIzaSyD8y-Fz_Vu5toyYAZTvAWNiogJgvbvq0EU in local.properties
