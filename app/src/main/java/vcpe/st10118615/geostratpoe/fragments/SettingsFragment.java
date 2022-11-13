@@ -90,7 +90,6 @@ public class SettingsFragment extends Fragment {
             directions.setIsPassword(true);
 
             Navigation.findNavController(requireView()).navigate(directions);
-
         });
 
 
