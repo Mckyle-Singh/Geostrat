@@ -1,6 +1,7 @@
 package vcpe.st10118615.geostratpoe.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -146,12 +147,14 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
     private void getDirection(String mode) {
 
+        String unit = "imperial";
         if (isLocationPermissionOk) {
             loadingDialog.startLoading();
             String url = "https://maps.googleapis.com/maps/api/directions/json?" +
                     "origin=" + currentLocation.getLatitude() + "," + currentLocation.getLongitude() +
                     "&destination=" + endLat + "," + endLng +
                     "&mode=" + mode +
+                    "&units=" + unit +
                     "&key=" + getResources().getString(R.string.API_KEY);
 
             retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
@@ -296,6 +299,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+    @SuppressLint("MissingPermission")
     private void setupGoogleMap() {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -308,6 +312,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         getCurrentLocation();
     }
 
+    @SuppressLint("MissingPermission")
     private void getCurrentLocation() {
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

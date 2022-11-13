@@ -2,7 +2,10 @@ package vcpe.st10118615.geostratpoe;
 
 // TODO: DOCUMENT MODELS
 public class UserModel {
-    private String email, username, image;
+    private String email;
+    private String username;
+    private String image;
+    private String unit;
     private boolean isNotificationEnable;
 
     public UserModel() {
@@ -12,6 +15,14 @@ public class UserModel {
         this.email = email;
         this.username = username;
         this.isNotificationEnable = isNotificationEnable;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getEmail() {
