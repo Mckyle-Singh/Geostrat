@@ -316,6 +316,7 @@ public class SettingsFragment extends Fragment {
                         if (!unit.isEmpty()) {
                             DatabaseReference userUnitType = database.getReference("Users/" + userId);
                             userUnitType.child("unit").setValue(unit);
+                            Toast.makeText(getContext(), "Unit System Changed", Toast.LENGTH_LONG).show();
                         }
                     }
                 })
