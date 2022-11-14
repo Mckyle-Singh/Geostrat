@@ -7,10 +7,17 @@ public class UserModel {
     private String image;
     private String unit;
     private boolean isNotificationEnable;
+    public static String unitType;
 
     public UserModel() {
     }
 
+    public UserModel(String email, String username, boolean isNotificationEnable, String unit) {
+        this.email = email;
+        this.username = username;
+        this.isNotificationEnable = isNotificationEnable;
+        this.unit = unit;
+    }
     public UserModel(String email, String username, boolean isNotificationEnable) {
         this.email = email;
         this.username = username;

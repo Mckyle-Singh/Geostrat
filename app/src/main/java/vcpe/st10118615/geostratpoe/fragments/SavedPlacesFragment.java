@@ -87,7 +87,6 @@ public class SavedPlacesFragment extends Fragment implements SavedLocationInterf
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-
                             SavedPlaceModel savedPlaceModel = snapshot.getValue(SavedPlaceModel.class);
                             holder.binding.setSavedPlaceModel(savedPlaceModel);
                             holder.binding.setListener(savedLocationInterface);

@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,18 +30,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import vcpe.st10118615.geostratpoe.R;
+import vcpe.st10118615.geostratpoe.UserModel;
+import vcpe.st10118615.geostratpoe.activity.LoginActivity;
+import vcpe.st10118615.geostratpoe.activity.MainActivity;
 import vcpe.st10118615.geostratpoe.constant.AllConstant;
 import vcpe.st10118615.geostratpoe.databinding.FragmentSettingsBinding;
 import vcpe.st10118615.geostratpoe.permissions.AppPermissions;
@@ -51,7 +61,12 @@ public class SettingsFragment extends Fragment {
     private LoadingDialog loadingDialog;
     private AppPermissions appPermissions;
     private Uri imageUri;
+    private String Units;
+    private String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference userCatRef = database.getReference("Users/" + userId);
 
+    Spinner spinner;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -92,12 +107,23 @@ public class SettingsFragment extends Fragment {
             Navigation.findNavController(requireView()).navigate(directions);
         });
 
+        binding.cardLogout.setOnClickListener(username -> {
+            signOut();
+        });
+
+        binding.cardMeasurement.setOnClickListener(username -> {
+            unitTypeDialog();
+        });
 
         return binding.getRoot();
     }
 
-    private void pickImage() {
+    private void signOut() {
+        firebaseAuth.signOut();
+        startActivity(new Intent(getContext(), LoginActivity.class));
+    }
 
+    private void pickImage() {
         CropImage.activity()
                 .setCropShape(CropImageView.CropShape.OVAL)
                 .start(getContext(), this);
@@ -183,9 +209,7 @@ public class SettingsFragment extends Fragment {
                             firebaseAuth.getCurrentUser().updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> profile) {
-
                                     if (profile.isSuccessful()) {
-
                                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
                                         Map<String, Object> map = new HashMap<>();
                                         map.put("image", url);
@@ -193,13 +217,11 @@ public class SettingsFragment extends Fragment {
                                         Glide.with(requireContext()).load(url).into(binding.imgProfile);
                                         loadingDialog.stopLoading();
                                         Toast.makeText(getContext(), "Image Updated", Toast.LENGTH_SHORT).show();
-
                                     } else {
                                         loadingDialog.stopLoading();
                                         Log.d("TAG", "Profile : " + profile.getException());
                                         Toast.makeText(getContext(), "Profile : " + profile.getException(), Toast.LENGTH_SHORT).show();
                                     }
-
                                 }
                             });
 
@@ -209,7 +231,6 @@ public class SettingsFragment extends Fragment {
                             Toast.makeText(getContext(), "" + task.getException(), Toast.LENGTH_SHORT).show();
                             Log.d("TAG", "onComplete: image url  " + task.getException());
                         }
-
                     }
                 });
             }
@@ -254,6 +275,47 @@ public class SettingsFragment extends Fragment {
                             });
                         } else {
                             Toast.makeText(getContext(), "Username is required", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .create().show();
+    }
+
+    public void loadSpinner() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.unit_dialog_layout, null, false);
+        builder.setView(view);
+
+    }
+    private void unitTypeDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.unit_dialog_layout, null, false);
+        builder.setView(view);
+
+        spinner = (Spinner) view.findViewById(R.id.units_spinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.unit_types, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+        builder.setTitle("Edit Unit");
+
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String unit = spinner.getSelectedItem().toString();
+                        if (!unit.isEmpty()) {
+                            DatabaseReference userUnitType = database.getReference("Users/" + userId);
+                            userUnitType.child("unit").setValue(unit);
                         }
                     }
                 })

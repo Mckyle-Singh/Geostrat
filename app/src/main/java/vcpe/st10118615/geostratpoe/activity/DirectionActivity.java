@@ -9,14 +9,19 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,9 +38,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -46,10 +60,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vcpe.st10118615.geostratpoe.R;
+import vcpe.st10118615.geostratpoe.SavedPlaceModel;
+import vcpe.st10118615.geostratpoe.UserModel;
 import vcpe.st10118615.geostratpoe.adapter.DirectionStepAdapter;
 import vcpe.st10118615.geostratpoe.constant.AllConstant;
 import vcpe.st10118615.geostratpoe.databinding.ActivityDirectionBinding;
 import vcpe.st10118615.geostratpoe.databinding.BottomSheetLayoutBinding;
+import vcpe.st10118615.geostratpoe.databinding.SavedItemLayoutBinding;
+import vcpe.st10118615.geostratpoe.fragments.SavedPlacesFragment;
 import vcpe.st10118615.geostratpoe.model.DirectionPlaceModel.DirectionLegModel;
 import vcpe.st10118615.geostratpoe.model.DirectionPlaceModel.DirectionResponseModel;
 import vcpe.st10118615.geostratpoe.model.DirectionPlaceModel.DirectionRouteModel;
@@ -63,6 +81,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
     private ActivityDirectionBinding binding;
     private GoogleMap mGoogleMap;
+    private FirebaseAuth firebaseAuth;
     private AppPermissions appPermissions;
     private boolean isLocationPermissionOk, isTrafficEnable;
     private BottomSheetBehavior<RelativeLayout> bottomSheetBehavior;
@@ -73,6 +92,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     private Double endLat, endLng;
     private String placeId;
     private int currentMode;
+    private String UnitType;
     private DirectionStepAdapter adapter;
 
     @Override
@@ -147,104 +167,128 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
 
     private void getDirection(String mode) {
 
-        String unit = "imperial";
-        if (isLocationPermissionOk) {
-            loadingDialog.startLoading();
-            String url = "https://maps.googleapis.com/maps/api/directions/json?" +
-                    "origin=" + currentLocation.getLatitude() + "," + currentLocation.getLongitude() +
-                    "&destination=" + endLat + "," + endLng +
-                    "&mode=" + mode +
-                    "&units=" + unit +
-                    "&key=" + getResources().getString(R.string.API_KEY);
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userCatRef = database.getReference("Users/" + userId);
+        final String[] unitType = new String[1];
+        userCatRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()) {
+                    if(task.getResult().exists()) {
+                        DataSnapshot data = task.getResult();
+                        unitType[0] = data.child("unit").getValue().toString();
+                        UserModel userModel = new UserModel();
+                        userModel.setUnit(unitType[0]);
 
-            retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
-                @Override
-                public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
-                    Gson gson = new Gson();
-                    String res = gson.toJson(response.body());
-                    Log.d("TAG", "onResponse: " + res);
+                        if (isLocationPermissionOk) {
+                            loadingDialog.startLoading();
+                            String url = "https://maps.googleapis.com/maps/api/directions/json?" +
+                                    "origin=" + currentLocation.getLatitude() + "," + currentLocation.getLongitude() +
+                                    "&destination=" + endLat + "," + endLng +
+                                    "&mode=" + mode +
+                                    "&units=" + userModel.getUnit() +
+                                    "&key=" + getResources().getString(R.string.API_KEY);
 
-                    if (response.errorBody() == null) {
-                        if (response.body() != null) {
-                            clearUI();
+                            retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
+                                @Override
+                                public void onResponse(Call<DirectionResponseModel> call, Response<DirectionResponseModel> response) {
+                                    Gson gson = new Gson();
+                                    String res = gson.toJson(response.body());
+                                    Log.d("TAG", "onResponse: " + res);
 
-                            if (response.body().getDirectionRouteModels().size() > 0) {
-                                DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
+                                    if (response.errorBody() == null) {
+                                        if (response.body() != null) {
+                                            clearUI();
 
-                                getSupportActionBar().setTitle(routeModel.getSummary());
+                                            if (response.body().getDirectionRouteModels().size() > 0) {
+                                                DirectionRouteModel routeModel = response.body().getDirectionRouteModels().get(0);
 
-                                DirectionLegModel legModel = routeModel.getLegs().get(0);
-                                binding.txtStartLocation.setText(legModel.getStartAddress());
-                                binding.txtEndLocation.setText(legModel.getEndAddress());
+                                                getSupportActionBar().setTitle(routeModel.getSummary());
 
-                                bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
-                                bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
+                                                DirectionLegModel legModel = routeModel.getLegs().get(0);
+                                                binding.txtStartLocation.setText(legModel.getStartAddress());
+                                                binding.txtEndLocation.setText(legModel.getEndAddress());
 
-                                mGoogleMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(legModel.getEndLocation().getLat(), legModel.getEndLocation().getLng()))
-                                        .title("End Location"));
+                                                bottomSheetLayoutBinding.txtSheetTime.setText(legModel.getDuration().getText());
+                                                bottomSheetLayoutBinding.txtSheetDistance.setText(legModel.getDistance().getText());
 
-                                mGoogleMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng()))
-                                        .title("Start Location"));
+                                                mGoogleMap.addMarker(new MarkerOptions()
+                                                        .position(new LatLng(legModel.getEndLocation().getLat(), legModel.getEndLocation().getLng()))
+                                                        .title("End Location"));
 
-                                adapter.setDirectionStepModels(legModel.getSteps());
+                                                mGoogleMap.addMarker(new MarkerOptions()
+                                                        .position(new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng()))
+                                                        .title("Start Location"));
 
-                                List<LatLng> stepList = new ArrayList<>();
+                                                adapter.setDirectionStepModels(legModel.getSteps());
 
-                                PolylineOptions options = new PolylineOptions()
-                                        .width(25)
-                                        .color(Color.BLUE)
-                                        .geodesic(true)
-                                        .clickable(true)
-                                        .visible(true);
+                                                List<LatLng> stepList = new ArrayList<>();
 
-                                List<PatternItem> pattern;
-                                if (mode.equals("walking")) {
-                                    pattern = Arrays.asList(
-                                            new Dot(), new Gap(10));
+                                                PolylineOptions options = new PolylineOptions()
+                                                        .width(25)
+                                                        .color(Color.BLUE)
+                                                        .geodesic(true)
+                                                        .clickable(true)
+                                                        .visible(true);
 
-                                    options.jointType(JointType.ROUND);
-                                } else {
-                                    pattern = Arrays.asList(
-                                            new Dash(30));
-                                }
-                                options.pattern(pattern);
-                                for (DirectionStepModel stepModel : legModel.getSteps()) {
-                                    List<com.google.maps.model.LatLng> decodedLatLng = decode(stepModel.getPolyline().getPoints());
-                                    for (com.google.maps.model.LatLng latLng : decodedLatLng) {
-                                        stepList.add(new LatLng(latLng.lat, latLng.lng));
+                                                List<PatternItem> pattern;
+                                                if (mode.equals("walking")) {
+                                                    pattern = Arrays.asList(
+                                                            new Dot(), new Gap(10));
+
+                                                    options.jointType(JointType.ROUND);
+                                                } else {
+                                                    pattern = Arrays.asList(
+                                                            new Dash(30));
+                                                }
+                                                options.pattern(pattern);
+                                                for (DirectionStepModel stepModel : legModel.getSteps()) {
+                                                    List<com.google.maps.model.LatLng> decodedLatLng = decode(stepModel.getPolyline().getPoints());
+                                                    for (com.google.maps.model.LatLng latLng : decodedLatLng) {
+                                                        stepList.add(new LatLng(latLng.lat, latLng.lng));
+                                                    }
+                                                }
+
+                                                options.addAll(stepList);
+
+                                                Polyline polyline = mGoogleMap.addPolyline(options);
+
+                                                LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+                                                LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
+
+                                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
+
+                                            } else {
+                                                Toast.makeText(DirectionActivity.this, "No route found", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            Toast.makeText(DirectionActivity.this, "No route found", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        Log.d("TAG", "onResponse: " + response);
                                     }
+
+                                    loadingDialog.stopLoading();
                                 }
 
-                                options.addAll(stepList);
+                                @Override
+                                public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
 
-                                Polyline polyline = mGoogleMap.addPolyline(options);
-
-                                LatLng startLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
-                                LatLng endLocation = new LatLng(legModel.getStartLocation().getLat(), legModel.getStartLocation().getLng());
-
-                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(startLocation, endLocation), 17));
-
-                            } else {
-                                Toast.makeText(DirectionActivity.this, "No route found", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(DirectionActivity.this, "No route found", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
-                    } else {
-                        Log.d("TAG", "onResponse: " + response);
                     }
-
-                    loadingDialog.stopLoading();
+                    if(!task.getResult().exists()) {
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error: Retrieval Unsuccessful.", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
 
-                @Override
-                public void onFailure(Call<DirectionResponseModel> call, Throwable t) {
+        String unit = "imperial";
 
-                }
-            });
-        }
 
     }
 
