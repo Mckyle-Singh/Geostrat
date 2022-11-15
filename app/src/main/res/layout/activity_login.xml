@@ -4,15 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryColor"
+    android:background="@color/white"
     tools:context=".activity.LoginActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.6"
-        android:scaleType="centerCrop"
-        android:src="@drawable/login_background" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,20 +15,30 @@
         android:orientation="vertical"
         android:weightSum="3">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.8"
             android:gravity="bottom">
 
+            <ImageView
+                android:layout_width="194dp"
+                android:layout_height="173dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_register_hero" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textColor="@color/white"
-                android:textSize="40dp"
-                android:textStyle="bold" />
+                android:layout_marginHorizontal="30dp"
+                android:gravity="end"
+                android:text="Already \nhave an \nAccount?"
+                android:textColor="@color/black"
+                android:textSize="30dp" />
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -52,11 +57,11 @@
                 android:fontFamily="@font/playfair_display"
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="10dp"
-                android:drawableTint="@color/white"
+                android:drawableTint="@color/black"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/edtPassword"
@@ -67,11 +72,11 @@
                 android:backgroundTint="@color/white"
                 android:drawableStart="@drawable/ic_lock"
                 android:drawablePadding="10dp"
-                android:drawableTint="@color/white"
+                android:drawableTint="@color/black"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/txtForgetPassword"
@@ -80,7 +85,7 @@
                 android:layout_marginHorizontal="30dp"
                 android:gravity="end"
                 android:text="Forget password?"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="20dp" />
 
 
@@ -90,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="10dp"
-                android:backgroundTint="@color/transparentColor"
+
                 android:padding="15dp"
                 android:text="Login"
                 android:textStyle="bold"
