@@ -13,9 +13,9 @@ import com.google.maps.android.SphericalUtil;
 
 public class InfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
-    private final InfoWindowLayoutBinding binding;
-    private final Location location;
-    private final Context context;
+    private InfoWindowLayoutBinding binding;
+    private Location location;
+    private Context context;
 
     public InfoWindowAdapter(Location location, Context context) {
 
