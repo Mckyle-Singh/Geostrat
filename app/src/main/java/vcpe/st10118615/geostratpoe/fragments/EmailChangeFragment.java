@@ -46,7 +46,7 @@ public class EmailChangeFragment extends Fragment {
 
             String email = binding.edtUEmail.getText().toString().trim();
             if (email.isEmpty()) {
-                binding.edtUEmail.setError("Email is required");
+                binding.edtUEmail.setError("Email is required!");
                 binding.edtUEmail.requestFocus();
             } else {
                 loadingDialog.startLoading();

@@ -62,7 +62,10 @@ public class PasswordChangeFragment extends Fragment {
         });
     }
 
-
+    /**
+     * Method to check for null fields
+     * @return
+     */
     private boolean areFieldReady() {
         password = binding.edtUPassword.getText().toString().trim();
         boolean flag = false;

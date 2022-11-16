@@ -41,7 +41,6 @@ public class SavedPlacesFragment extends Fragment implements SavedLocationInterf
 
     private FragmentSavedPlacesBinding binding;
     private FirebaseAuth firebaseAuth;
-    private ArrayList<SavedPlaceModel> savedPlaceModelArrayList;
     private LoadingDialog loadingDialog;
     private FirebaseRecyclerAdapter<String, ViewHolder> firebaseRecyclerAdapter;
     private SavedLocationInterface savedLocationInterface;
@@ -53,7 +52,6 @@ public class SavedPlacesFragment extends Fragment implements SavedLocationInterf
         binding = FragmentSavedPlacesBinding.inflate(inflater, container, false);
         savedLocationInterface = this;
         firebaseAuth = FirebaseAuth.getInstance();
-        savedPlaceModelArrayList = new ArrayList<>();
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Saved Places");
         return binding.getRoot();
@@ -92,13 +90,11 @@ public class SavedPlacesFragment extends Fragment implements SavedLocationInterf
                             holder.binding.setListener(savedLocationInterface);
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
-
             }
             @NonNull
             @Override
@@ -108,7 +104,6 @@ public class SavedPlacesFragment extends Fragment implements SavedLocationInterf
                 return new ViewHolder(binding);
             }
         };
-
         binding.savedRecyclerView.setAdapter(firebaseRecyclerAdapter);
         loadingDialog.stopLoading();
     }

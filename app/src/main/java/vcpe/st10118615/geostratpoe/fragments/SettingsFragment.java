@@ -150,7 +150,7 @@ public class SettingsFragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Mail sent verify the email", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Email sent please verify", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getContext(), "" + task.getException(), Toast.LENGTH_SHORT).show();
                         Log.d("TAG", "onComplete: profile email " + task.getException());
@@ -187,6 +187,10 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+    /**
+     * Method to upload user profile image
+     * @param imageUri
+     */
     private void uploadImage(Uri imageUri) {
 
         loadingDialog.startLoading();
@@ -286,12 +290,6 @@ public class SettingsFragment extends Fragment {
                 .create().show();
     }
 
-    public void loadSpinner() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        View view = LayoutInflater.from(requireContext()).inflate(R.layout.unit_dialog_layout, null, false);
-        builder.setView(view);
-
-    }
     private void unitTypeDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -324,7 +322,6 @@ public class SettingsFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
-                })
-                .create().show();
+                }).create().show();
     }
 }

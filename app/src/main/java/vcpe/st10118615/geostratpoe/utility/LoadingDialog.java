@@ -20,7 +20,7 @@ public class LoadingDialog {
         builder.setView(binding.getRoot());
         builder.setCancelable(false);
         alertDialog = builder.create();
-//        binding.rotateLoading.start();
+        binding.rotateLoading.start();
         alertDialog.show();
     }
     public void stopLoading() {

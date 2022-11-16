@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         imgHeader = headerLayout.findViewById(R.id.imgHeader);
         txtName = headerLayout.findViewById(R.id.txtHeaderName);
         txtEmail = headerLayout.findViewById(R.id.txtHeaderEmail);
+
         getUserData();
     }
 
@@ -96,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
                     txtName.setText(userModel.getUsername());
                     txtEmail.setText(userModel.getEmail());
                 }
+
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

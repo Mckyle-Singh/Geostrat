@@ -22,7 +22,8 @@
                 android:layout_height="wrap_content"
                 android:alpha="0.8"
                 android:scaleType="centerCrop"
-                android:src="@drawable/header_background" />
+                android:src="@drawable/header_background"
+                android:contentDescription="@string/todo" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Jane Doe"
+                    android:text="@string/jane_doe"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
@@ -53,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="2dp"
-                    android:text="JaneDoe@gmail.com"
+                    android:text="@string/janedoe_gmail_com"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
             </LinearLayout>

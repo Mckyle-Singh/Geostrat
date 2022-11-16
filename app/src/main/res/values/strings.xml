@@ -7,6 +7,9 @@
     <string name="open_navigation_drawer">Open Drawer</string>
     <string name="close_navigation_drawer">Open Drawer</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="jane_doe">Jane Doe</string>
+    <string name="janedoe_gmail_com">JaneDoe@gmail.com</string>
+    <string name="todo">TODO</string>
 
     <string-array name="unit_types">
         <item>metric</item>
