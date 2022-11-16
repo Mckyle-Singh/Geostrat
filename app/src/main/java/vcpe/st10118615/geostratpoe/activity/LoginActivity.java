@@ -18,7 +18,8 @@ import vcpe.st10118615.geostratpoe.utility.LoadingDialog;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
-    private String email, password;
+    private String email = "cohogo7408@sopulit.com", password = "password";
+
     private LoadingDialog loadingDialog;
 
     @Override
@@ -81,6 +82,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean areFieldReady() {
 
+        binding.edtEmail.setText("cohogo7408@sopulit.com");
+        binding.edtPassword.setText("password");
         email = binding.edtEmail.getText().toString().trim();
         password = binding.edtPassword.getText().toString().trim();
 
