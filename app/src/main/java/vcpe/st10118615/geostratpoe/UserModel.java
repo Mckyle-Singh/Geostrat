@@ -1,6 +1,8 @@
 package vcpe.st10118615.geostratpoe;
 
-// TODO: DOCUMENT MODELS
+/**
+ * User Model
+ */
 public class UserModel {
     private String email;
     private String username;

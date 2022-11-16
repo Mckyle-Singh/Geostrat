@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                     txtName.setText(userModel.getUsername());
                     txtEmail.setText(userModel.getEmail());
                 }
-
             }
 
             @Override

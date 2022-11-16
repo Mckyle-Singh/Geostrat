@@ -3,6 +3,9 @@ package vcpe.st10118615.geostratpoe.model.DirectionPlaceModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Start Location Model
+ */
 public class StartLocationModel {
     @SerializedName("lat")
     @Expose

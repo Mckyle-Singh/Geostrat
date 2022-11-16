@@ -10,6 +10,9 @@ import androidx.core.content.ContextCompat;
 
 import vcpe.st10118615.geostratpoe.constant.AllConstant;
 
+/**
+ * App Permission Helper
+ */
 public class AppPermissions {
     public boolean isStorageOk(Context context) {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;

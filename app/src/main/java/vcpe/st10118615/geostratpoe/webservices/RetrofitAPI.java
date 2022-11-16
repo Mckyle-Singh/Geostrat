@@ -6,6 +6,10 @@ import retrofit2.http.Url;
 import vcpe.st10118615.geostratpoe.model.DirectionPlaceModel.DirectionResponseModel;
 import vcpe.st10118615.geostratpoe.model.GooglePlaceModel.GoogleResponseModel;
 
+/**
+ * RetrofitAPI interface
+ * For network communications
+ */
 public interface RetrofitAPI {
     @GET
     Call<GoogleResponseModel> getNearByPlaces(@Url String url);

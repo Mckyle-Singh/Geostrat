@@ -41,7 +41,6 @@ public class DirectionStepAdapter extends RecyclerView.Adapter<DirectionStepAdap
             holder.binding.txtStepTime.setText(stepModel.getDuration().getText());
             holder.binding.txtStepDistance.setText(stepModel.getDistance().getText());
         }
-
     }
 
     @Override

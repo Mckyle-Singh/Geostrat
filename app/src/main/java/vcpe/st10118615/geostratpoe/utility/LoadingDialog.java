@@ -6,6 +6,10 @@ import android.view.LayoutInflater;
 import vcpe.st10118615.geostratpoe.R;
 import vcpe.st10118615.geostratpoe.activity.SignUpActivity;
 import vcpe.st10118615.geostratpoe.databinding.DialogLayoutBinding;
+
+/**
+ * Loading dialog helper
+ */
 public class LoadingDialog {
 
     private Activity activity;

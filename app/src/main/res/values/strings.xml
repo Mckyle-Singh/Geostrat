@@ -10,6 +10,9 @@
     <string name="jane_doe">Jane Doe</string>
     <string name="janedoe_gmail_com">JaneDoe@gmail.com</string>
     <string name="todo">TODO</string>
+    <string name="search_place">Search Place</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
 
     <string-array name="unit_types">
         <item>metric</item>

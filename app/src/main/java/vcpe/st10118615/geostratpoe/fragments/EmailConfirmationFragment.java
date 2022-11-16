@@ -32,7 +32,6 @@ public class EmailConfirmationFragment extends Fragment {
     private LoadingDialog loadingDialog;
     private FirebaseAuth firebaseAuth;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

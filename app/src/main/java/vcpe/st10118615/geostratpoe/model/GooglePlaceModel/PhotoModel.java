@@ -10,6 +10,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Photo Model
+ */
 public class PhotoModel {
     @SerializedName("height")
     @Expose

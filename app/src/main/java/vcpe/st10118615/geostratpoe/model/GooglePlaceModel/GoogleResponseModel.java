@@ -7,6 +7,9 @@ import java.util.List;
 
 import vcpe.st10118615.geostratpoe.GooglePlaceModel;
 
+/**
+ * GoogleResponse Model
+ */
 public class GoogleResponseModel {
     @SerializedName("results")
     @Expose

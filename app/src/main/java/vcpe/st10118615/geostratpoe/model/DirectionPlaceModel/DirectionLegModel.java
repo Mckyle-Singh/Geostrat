@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Direction length Model
+ */
 public class DirectionLegModel {
 
     @SerializedName("distance")
@@ -28,7 +31,6 @@ public class DirectionLegModel {
     @SerializedName("steps")
     @Expose
     private List<DirectionStepModel> steps = null;
-
 
     public DirectionDistanceModel getDistance() {
         return distance;

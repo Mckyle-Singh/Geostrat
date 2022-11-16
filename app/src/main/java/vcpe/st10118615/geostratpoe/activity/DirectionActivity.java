@@ -59,6 +59,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vcpe.st10118615.geostratpoe.BuildConfig;
 import vcpe.st10118615.geostratpoe.R;
 import vcpe.st10118615.geostratpoe.SavedPlaceModel;
 import vcpe.st10118615.geostratpoe.UserModel;
@@ -92,7 +93,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
     private Double endLat, endLng;
     private String placeId;
     private int currentMode;
-    private String UnitType;
     private DirectionStepAdapter adapter;
 
     @Override
@@ -188,7 +188,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
                                     "&destination=" + endLat + "," + endLng +
                                     "&mode=" + mode +
                                     "&units=" + userModel.getUnit() +
-                                    "&key=" + getResources().getString(R.string.API_KEY);
+                                    "&key=" + BuildConfig.MAPS_API_KEY;
 
                             retrofitAPI.getDirection(url).enqueue(new Callback<DirectionResponseModel>() {
                                 @Override
@@ -300,7 +300,6 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
         getSupportActionBar().setTitle("");
         bottomSheetLayoutBinding.txtSheetDistance.setText("");
         bottomSheetLayoutBinding.txtSheetTime.setText("");
-
     }
 
     @Override

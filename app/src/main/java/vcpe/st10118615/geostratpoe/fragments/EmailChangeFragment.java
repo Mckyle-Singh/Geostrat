@@ -29,7 +29,6 @@ public class EmailChangeFragment extends Fragment {
     private vcpe.st10118615.geostratpoe.databinding.FragmentEmailChangeBinding binding;
     private LoadingDialog loadingDialog;
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,7 +74,5 @@ public class EmailChangeFragment extends Fragment {
 
             }
         });
-
-
     }
 }

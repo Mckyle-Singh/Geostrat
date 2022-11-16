@@ -3,6 +3,9 @@ package vcpe.st10118615.geostratpoe.model.DirectionPlaceModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * End Location Model
+ */
 public class EndLocationModel {
     @SerializedName("lat")
     @Expose

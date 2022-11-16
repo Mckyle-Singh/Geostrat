@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Direction Route Model
+ */
 public class DirectionRouteModel {
     @SerializedName("legs")
     @Expose

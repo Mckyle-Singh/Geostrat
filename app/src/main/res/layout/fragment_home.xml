@@ -42,16 +42,17 @@
                 android:drawableStart="@drawable/ic_location"
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/primaryColor"
-                android:hint="Search Place"
+                android:hint="@string/search_place"
                 android:inputType="text"
                 android:maxLines="1"
-                android:textColorHint="@color/itemTextColor" />
+                android:textColorHint="#2E7D32" />
         </com.google.android.material.textfield.TextInputLayout>
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/primaryColor"
             android:background="@drawable/map_background"
             android:elevation="5dp" />
 
@@ -78,11 +79,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/placesList"
         android:layout_alignParentEnd="true"
-        android:layout_margin="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
         android:src="@drawable/ic_map_type"
         app:backgroundTint="@color/white"
         app:fabCustomSize="40dp"
-        app:tint="@color/primaryColor" />
+        app:tint="@color/primaryColor"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/enableTraffic"
@@ -94,7 +99,8 @@
         android:src="@drawable/ic_traffic"
         app:backgroundTint="@color/white"
         app:fabCustomSize="40dp"
-        app:tint="@color/itemTextColor" />
+        app:tint="@color/itemTextColor"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/currentLocation"
@@ -102,11 +108,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/enableTraffic"
         android:layout_alignParentEnd="true"
-        android:layout_margin="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
         android:src="@drawable/ic_my_location"
         app:backgroundTint="@color/white"
         app:fabCustomSize="50dp"
-        app:tint="@color/primaryColor" />
+        app:tint="@color/primaryColor"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:contentDescription="TODO" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/placesRecyclerView"

@@ -39,7 +39,6 @@ public class GooglePlaceAdapter extends RecyclerView.Adapter<GooglePlaceAdapter.
             holder.binding.setGooglePlaceModel(placeModel);
             holder.binding.setListener(nearLocationInterface);
         }
-
     }
 
     @Override
